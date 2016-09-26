@@ -5,28 +5,28 @@ package rutaanalisis;
  * @author elco45
  */
 public class saving {
-    int value;
+    double value;
     node node1;
     node node2;
 
     public saving() {
     }
 
-    public saving(int value) {
+    public saving(double value) {
         this.value = value;
     }
 
-    public saving(int value, node node1, node node2) {
+    public saving(double value, node node1, node node2) {
         this.value = value;
         this.node1 = node1;
         this.node2 = node2;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 

@@ -71,7 +71,7 @@ public class node {
 
     @Override
     public String toString() {
-        return "node{" + "num=" + num + ", weight=" + weight + '}';
+        return "{" + "num=" + num + ", weight=" + weight + '}';
     }
 
     

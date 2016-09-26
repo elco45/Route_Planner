@@ -27,22 +27,23 @@ public class RutaAnalisis {
     public static void main(String[] args) {
         readFile();
         listAll();
-        System.out.println("NumCamion " + numCamion);
-        if (numCamion <= 0 || numCamion > listaNodos.size()) {
+        System.out.println("NumCamion " + numCamion + "\n");
+
+        if (numCamion <= 0 || numCamion >= listaNodos.size()) {
             System.out.println("WHY YOU DO THIS TO ME!!! Q.Q");
         } else {
-            System.out.println("Adj");
             matrizAdj = createAdj();
             writeAdj(matrizAdj);
-            System.out.println("\nLimit" + limit);
-            System.out.println("Saving");
             writeSaving(createSaving());
             listaSavings.sort(Comparator.comparing(saving::getValue));
             Collections.reverse(listaSavings);
+            for (int i = 0; i < listaSavings.size(); i++) {
+                System.out.println(listaSavings.get(i));
+            }
             startPlanner();
             printRutas();
-            /*printSalida();
-             printCalculos();*/
+            printSalida();
+            printCalculos();
         }
     }
 
@@ -104,17 +105,19 @@ public class RutaAnalisis {
         return ans;
     }
 
-    public static int distance(node init, node end) {
-        return (int) Math.sqrt((Math.pow(end.getX() - init.getX(), 2)) + (Math.pow(end.getY() - init.getY(), 2)));
+    public static double distance(node init, node end) {
+        return Math.sqrt((Math.pow(end.getX() - init.getX(), 2)) + (Math.pow(end.getY() - init.getY(), 2)));
     }
 
     public static void writeAdj(double[][] adj) {
+        System.out.println("Adj");
         for (int i = 0; i < adj.length; i++) {
             for (int j = 0; j < adj.length; j++) {
-                System.out.print("[" + adj[i][j] + "]");
+                System.out.print("[" + (int) adj[i][j] + "]");
             }
             System.out.println("");
         }
+        System.out.println("Limit " + limit + "\n");
     }
 
     public static saving[][] createSaving() {
@@ -134,20 +137,21 @@ public class RutaAnalisis {
     }
 
     public static void writeSaving(saving[][] sv) {
+        System.out.println("Saving");
         for (int i = 0; i < sv.length; i++) {
             for (int j = 0; j < sv.length; j++) {
-                System.out.print("[" + sv[i][j].value + "]");
+                System.out.print("[" + (int) sv[i][j].value + "]");
             }
             System.out.println("");
         }
+        System.out.println("");
     }
 
     public static void clarkeWright() {
         listaRutas = new ArrayList<route>();
         for (int i = 1; i < listaNodos.size(); i++) {
             node nTmp = listaNodos.get(i);
-            route rTmp = new route(listaNodos.size());
-            rTmp.limit = limit;
+            route rTmp = new route(listaNodos.size(),matrizAdj[0][nTmp.num]);
             rTmp.actual += nTmp.weight;
             rTmp.insert(new edge(listaNodos.get(0), nTmp, matrizAdj[0][nTmp.num]));
             rTmp.insert(new edge(nTmp, listaNodos.get(0), matrizAdj[0][nTmp.num]));
@@ -159,7 +163,8 @@ public class RutaAnalisis {
             node n2 = actualS.node2;
             route r1 = n1.ruta;
             route r2 = n2.ruta;
-            if (!r1.equals(r2) && r1.actual + r2.actual < r1.limit) {
+            
+            if (!r1.equals(r2) && (r1.actual)+ (r2.actual) < limit) {
                 edge in = r1.allEdges[n1.num][0];
                 edge out = r2.allEdges[n2.num][1];
                 if (out != null && in != null) {
@@ -170,9 +175,9 @@ public class RutaAnalisis {
                 }
             }
         }
-        /*for (int i = 0; i < listaRutas.size(); i++) {
-            System.out.println(listaRutas.get(i));
-        }*/
+        for (int i = 0; i < listaRutas.size(); i++) {
+         System.out.println(listaRutas.get(i));
+         }
     }
 
     public static void startPlanner() {
@@ -183,8 +188,9 @@ public class RutaAnalisis {
                 limit -= limit * 0.01;
             }
             clarkeWright();
-            //System.out.println("///////////////////////");
+            System.out.println("///////////////////////");
         } while (listaRutas.size() != numCamion);
+        System.out.println("");
     }
 
     public static void printRutas() {
@@ -193,9 +199,10 @@ public class RutaAnalisis {
             System.out.print(e.start.num + "-" + e.end.num + "-");
             do {
                 e = listaRutas.get(i).allEdges[e.end.num][1];
-                System.out.print( e.end.num + "-");
+                listaRutas.get(i).calculateActual();
+                System.out.print(e.end.num + "-");
             } while (e.end.num != 0);
-            System.out.print("Distancia recorrida: "+listaRutas.get(i).actual);
+            System.out.print("Distancia recorrida: " + listaRutas.get(i).actual);
             System.out.println("");
         }
     }
