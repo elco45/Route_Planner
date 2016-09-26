@@ -57,12 +57,10 @@ public class route {
             this.allEdges[e.start.num][1] = null;
             this.allEdges[0][0] = null;
             this.edges.remove(e);
-            
             edge e2 = r2.allEdges[0][1];
             r2.allEdges[e.end.num][0] = null;
             r2.allEdges[0][1] = null;
             r2.edges.remove(e2);
-            
             for (int i = 0; i < r2.getEdges().size(); i++) {
                 this.insert(r2.getEdges().get(i));
             }
@@ -71,17 +69,14 @@ public class route {
             return true;
         } else if (r2.allEdges[mergingEdge.end.num][1].end.num == 0 && this.allEdges[mergingEdge.start.num][0].start.num == 0) {
             mergingEdge.reverse();
-            
             edge e = this.allEdges[0][1];
             this.allEdges[e.end.num][0] = null;
             this.allEdges[0][1] = null;
             this.edges.remove(e);
-            
             edge e2 = r2.allEdges[0][0];
             r2.allEdges[e2.start.num][1] = null;
             r2.allEdges[0][0] = null;
             r2.edges.remove(e2);
-
             int siz = r2.getEdges().size();
             for (int i = 0; i < siz; i++) {
                 this.insert(r2.getEdges().get(i));

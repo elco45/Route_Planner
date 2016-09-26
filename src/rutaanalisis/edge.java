@@ -54,7 +54,7 @@ public class edge {
 
     @Override
     public String toString() {
-        return "edge{" + "start=" + start + ", end=" + end + ", distance=" + distance + '}';
+        return "edge{" + "start=" + start + ", end=" + end  + '}';
     }
 
 }

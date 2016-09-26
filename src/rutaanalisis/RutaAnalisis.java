@@ -190,9 +190,7 @@ public class RutaAnalisis {
     public static void printRutas() {
         for (int i = 0; i < listaRutas.size(); i++) {
             edge e = listaRutas.get(i).allEdges[0][1];
-
             System.out.print(e.start.num + "-" + e.end.num + "-");
-
             do {
                 e = listaRutas.get(i).allEdges[e.end.num][1];
                 System.out.print( e.end.num + "-");
